@@ -1,0 +1,29 @@
+;========================================================================
+;	cvsala.rc for MicroEmacs
+;	「沙羅曼蛇」ソースファイル変換
+;			Written by Igarashi
+;========================================================================
+store-procedure conv-sala-source-sub
+	beginning-of-file
+	set $search "$000f[0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+	!while 1
+		!force hunt-forward
+		!if &sequal $status FALSE
+			!goto endp
+		!endif
+		4 backward-character
+		5 delete-previous-character
+		insert-string "$007f0000+$"
+	!endwhile
+*endp
+!endm
+
+find-file "_sala2.s"
+add-mode "MAGIC"
+write-message "「沙羅曼蛇」ソースファイルを変換中です..."
+
+conv-sala-source-sub
+
+save-file
+exit-emacs
+
